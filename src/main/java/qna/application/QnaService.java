@@ -44,28 +44,19 @@ public class QnaService {
 
         question.isQuestionLoginUser(loginUser);
 
-//        if (!question.isOwner(loginUser)) {
-//            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-//        }
-
         List<Answer> answers = answerRepository.findByQuestionIdAndDeletedFalse(questionId);
         for (Answer answer : answers) {
             answer.isAnswerLoginUser(loginUser);
 
-//            if (!answer.isOwner(loginUser)) {
-//                throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
-//            }
         }
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(question.delete());
 
-//        question.setDeleted(true);
-//        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, questionId, question.getWriter(), LocalDateTime.now()));
         for (Answer answer : answers) {
             deleteHistories.add(answer.delete());
-
         }
+
         deleteHistoryService.saveAll(deleteHistories);
     }
 }
