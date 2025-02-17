@@ -120,5 +120,4 @@ public class Answer {
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
-
 }

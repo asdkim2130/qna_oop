@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import qna.exception.CannotDeleteException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,7 @@ public class Question {
     private LocalDateTime updatedAt;
 
     @OneToMany
-    private List<Answer> answers;
+    private List<Answer> answerList = new ArrayList<>();
 
     public Question(String title, String contents) {
         this(null, title, contents);
@@ -50,6 +51,8 @@ public class Question {
         this.writer = writer;
         return this;
     }
+
+
 
     public boolean isOwner(User writer) {
         return this.writer.getId().equals(writer.getId());
@@ -110,5 +113,19 @@ public class Question {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
+    public void deleteQuestion(User loginUser){
+
+        Question question = this.writeBy(loginUser);
+
+        question.isQuestionLoginUser(loginUser);
+
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
+        deleteHistories.add(question.delete());
+
+    }
+
+    public void deletingAnswer(User loginUser, Long questionId){
+
+    }
 
 }
