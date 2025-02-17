@@ -124,8 +124,10 @@ public class Question {
 
     }
 
-    public void deletingAnswer(User loginUser, Long questionId){
-
+    public void deleteAnswers(User loginUser){
+        for (Answer answer : answerList) {
+            answer.checkOwnerAndDelete(loginUser);
+        }
     }
 
 }

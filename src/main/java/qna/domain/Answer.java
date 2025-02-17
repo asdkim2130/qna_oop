@@ -16,7 +16,6 @@ import qna.exception.NotFoundException;
 import qna.exception.UnAuthorizedException;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -118,6 +117,11 @@ public class Answer {
         this.deleted = true;
 
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
+    }
+
+    public void checkOwnerAndDelete(User loginUser){
+        isAnswerLoginUser(loginUser);
+        delete();
     }
 
 }
