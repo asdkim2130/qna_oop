@@ -49,16 +49,7 @@ public class QnaService {
         //Question삭제
         question.deleteQuestion(loginUser);
 
-
-//        List<Answer> answers = answerRepository.findByQuestionIdAndDeletedFalse(questionId);
-//        for (Answer answer : answers) {
-//            answer.isAnswerLoginUser(loginUser);
-//
-//        }
-//
-//        for (Answer answer : answers) {
-//            deleteHistories.add(answer.delete());
-//        }
+        //Question
 
         deleteHistoryService.saveAll(deleteHistories);
     }

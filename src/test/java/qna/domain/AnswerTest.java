@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import qna.exception.CannotDeleteException;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CancellationException;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -32,5 +32,6 @@ public class AnswerTest {
         DeleteHistory answer삭제결과 = new DeleteHistory(ContentType.ANSWER, A1.getId(), A1.getWriter(), LocalDateTime.now());
 
         assertThat(answer삭제).isEqualTo(answer삭제결과);
+
     }
 }

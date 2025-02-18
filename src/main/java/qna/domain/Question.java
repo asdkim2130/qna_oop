@@ -34,8 +34,11 @@ public class Question {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @OneToMany
-    private List<Answer> answerList = new ArrayList<>();
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers = new ArrayList<>();
+
+    @Embedded
+    private Answers answers = new Answers();
 
     public Question(String title, String contents) {
         this(null, title, contents);
@@ -58,8 +61,11 @@ public class Question {
         return this.writer.getId().equals(writer.getId());
     }
 
+    //연관관계 편의 메서드(양방향 참조 동기화)
     public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
+        answer.toQuestion(this); //Answer -> Question
+        answers.add(answer);  //Questions -> Answer
+        //this : static 함수가 아니기 때문에 object.함수메서드로 불러와야 하는데 이 때 this가 object
     }
 
     public Long getId() {
@@ -113,21 +119,23 @@ public class Question {
         return new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now());
     }
 
-    public void deleteQuestion(User loginUser){
-
+    public List<DeleteHistory> deleteQuestion(User loginUser){
+        List<DeleteHistory> deleteHistories = new ArrayList<>();
         Question question = this.writeBy(loginUser);
 
         question.isQuestionLoginUser(loginUser);
 
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
+
         deleteHistories.add(question.delete());
 
+
     }
 
-    public void deleteAnswers(User loginUser){
-        for (Answer answer : answerList) {
-            answer.checkOwnerAndDelete(loginUser);
-        }
-    }
+//    public void deleteAnswers(User loginUser){
+//        for (Answer answer : answers) {
+//            answer.checkOwnerAndDelete(loginUser);
+//        }
+
+//    }
 
 }
